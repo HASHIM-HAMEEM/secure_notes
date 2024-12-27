@@ -4,7 +4,7 @@ import '../providers/note_provider.dart';
 import '../widgets/note_card.dart';
 
 class SearchScreen extends StatefulWidget {
-  const SearchScreen({Key? key}) : super(key: key);
+  const SearchScreen({super.key});
 
   @override
   State<SearchScreen> createState() => _SearchScreenState();

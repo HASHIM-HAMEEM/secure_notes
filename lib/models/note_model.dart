@@ -1,7 +1,8 @@
 import 'package:flutter/foundation.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Note {
-  final int? id;
+  final String? id;
   final String title;
   final String content;
   final DateTime createdAt;
@@ -26,63 +27,80 @@ class Note {
   })  : createdAt = createdAt ?? DateTime.now(),
         modifiedAt = modifiedAt ?? DateTime.now();
 
+  factory Note.fromFirestore(DocumentSnapshot doc) {
+    Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+    return Note(
+      id: doc.id,
+      title: data['title'] ?? '',
+      content: data['content'] ?? '',
+      isPinned: data['isPinned'] ?? false,
+      colorIndex: data['colorIndex'] ?? 0,
+      createdAt: (data['createdAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
+      modifiedAt:
+          (data['modifiedAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
+      tags: data['tags'] != null ? List<String>.from(data['tags']) : [],
+      attachments: data['attachments'] != null
+          ? List<String>.from(data['attachments'])
+          : null,
+      isLocked: data['isLocked'] ?? false,
+    );
+  }
+
   Note copy({
-    int? id,
+    String? id,
     String? title,
     String? content,
+    bool? isPinned,
     DateTime? createdAt,
     DateTime? modifiedAt,
     int? colorIndex,
-    bool? isPinned,
     List<String>? tags,
     List<String>? attachments,
     bool? isLocked,
-  }) =>
-      Note(
-        id: id ?? this.id,
-        title: title ?? this.title,
-        content: content ?? this.content,
-        createdAt: createdAt ?? this.createdAt,
-        modifiedAt: modifiedAt ?? this.modifiedAt,
-        colorIndex: colorIndex ?? this.colorIndex,
-        isPinned: isPinned ?? this.isPinned,
-        tags: tags ?? this.tags,
-        attachments: attachments ?? this.attachments,
-        isLocked: isLocked ?? this.isLocked,
-      );
+  }) {
+    return Note(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      content: content ?? this.content,
+      isPinned: isPinned ?? this.isPinned,
+      createdAt: createdAt ?? this.createdAt,
+      modifiedAt: modifiedAt ?? this.modifiedAt,
+      colorIndex: colorIndex ?? this.colorIndex,
+      tags: tags ?? this.tags,
+      attachments: attachments ?? this.attachments,
+      isLocked: isLocked ?? this.isLocked,
+    );
+  }
 
   Map<String, dynamic> toMap() {
     return {
       'id': id,
       'title': title,
       'content': content,
-      'created_at': createdAt.toIso8601String(),
-      'modified_at': modifiedAt.toIso8601String(),
-      'color_index': colorIndex,
-      'is_pinned': isPinned ? 1 : 0,
-      'tags': tags.join(','),
-      'attachments': attachments?.join(','),
-      'is_locked': isLocked ? 1 : 0,
+      'createdAt': createdAt.toIso8601String(),
+      'modifiedAt': modifiedAt.toIso8601String(),
+      'colorIndex': colorIndex,
+      'isPinned': isPinned,
+      'tags': tags,
+      'attachments': attachments,
+      'isLocked': isLocked,
     };
   }
 
   factory Note.fromMap(Map<String, dynamic> map) {
     return Note(
-      id: map['id'] as int?,
+      id: map['id'] as String?,
       title: map['title'] as String,
       content: map['content'] as String,
-      createdAt: DateTime.parse(map['created_at'] as String),
-      modifiedAt: DateTime.parse(map['modified_at'] as String),
-      colorIndex: map['color_index'] as int? ?? 6,
-      isPinned: (map['is_pinned'] as int?) == 1,
-      tags: map['tags'] != null && map['tags'].toString().isNotEmpty
-          ? (map['tags'] as String).split(',')
-          : [],
-      attachments:
-          map['attachments'] != null && map['attachments'].toString().isNotEmpty
-              ? (map['attachments'] as String).split(',')
-              : null,
-      isLocked: (map['is_locked'] as int?) == 1,
+      createdAt: DateTime.parse(map['createdAt'] as String),
+      modifiedAt: DateTime.parse(map['modifiedAt'] as String),
+      colorIndex: map['colorIndex'] as int? ?? 6,
+      isPinned: map['isPinned'] as bool? ?? false,
+      tags: map['tags'] != null ? List<String>.from(map['tags']) : [],
+      attachments: map['attachments'] != null
+          ? List<String>.from(map['attachments'])
+          : null,
+      isLocked: map['isLocked'] as bool? ?? false,
     );
   }
 

@@ -46,7 +46,7 @@ class DatabaseHelper {
   Future<Note> create(Note note) async {
     final db = await instance.database;
     final id = await db.insert(AppConstants.noteTable, note.toMap());
-    return note.copy(id: id);
+    return note.copy(id: id.toString());
   }
 
   Future<List<Note>> getAllNotes() async {

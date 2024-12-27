@@ -8,7 +8,7 @@ import '../constants/colors.dart';
 class NoteCard extends StatelessWidget {
   final Note note;
 
-  const NoteCard({Key? key, required this.note}) : super(key: key);
+  const NoteCard({super.key, required this.note});
 
   @override
   Widget build(BuildContext context) {

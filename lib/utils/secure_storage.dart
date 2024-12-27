@@ -1,40 +1,23 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'dart:convert';
 
 class SecureStorage {
-  static const _storage = FlutterSecureStorage();
+  static const storage = FlutterSecureStorage();
+  static const String pinKey = 'note_app_pin';
 
-  // Store encrypted note
-  static Future<void> saveSecureNote(int noteId, String content) async {
-    final encryptedContent = base64Encode(utf8.encode(content));
-    await _storage.write(key: 'note_$noteId', value: encryptedContent);
+  static Future<void> savePin(String pin) async {
+    await storage.write(key: pinKey, value: pin);
   }
 
-  // Retrieve encrypted note
-  static Future<String?> getSecureNote(int noteId) async {
-    final encryptedContent = await _storage.read(key: 'note_$noteId');
-    if (encryptedContent == null) return null;
-    return utf8.decode(base64Decode(encryptedContent));
+  static Future<String?> getPin() async {
+    return await storage.read(key: pinKey);
   }
 
-  // Delete secure note
-  static Future<void> deleteSecureNote(int noteId) async {
-    await _storage.delete(key: 'note_$noteId');
+  static Future<bool> hasPin() async {
+    return await storage.containsKey(key: pinKey);
   }
 
-  // Check if note exists in secure storage
-  static Future<bool> hasSecureNote(int noteId) async {
-    final value = await _storage.read(key: 'note_$noteId');
-    return value != null;
-  }
-
-  // Delete all secure notes
-  static Future<void> deleteAllSecureNotes() async {
-    await _storage.deleteAll();
-  }
-
-  // Get all secure notes
-  static Future<Map<String, String>> getAllSecureNotes() async {
-    return await _storage.readAll();
+  // Add this method to fix the error
+  static Future<void> deletePin() async {
+    await storage.delete(key: pinKey);
   }
 }

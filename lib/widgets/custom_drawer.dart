@@ -4,7 +4,7 @@ import '../providers/theme_provider.dart';
 import '../constants/app_constants.dart';
 
 class CustomDrawer extends StatelessWidget {
-  const CustomDrawer({Key? key}) : super(key: key);
+  const CustomDrawer({super.key});
 
   @override
   Widget build(BuildContext context) {

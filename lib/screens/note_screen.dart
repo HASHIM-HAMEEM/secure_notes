@@ -7,7 +7,7 @@ import '../constants/colors.dart';
 class NoteScreen extends StatefulWidget {
   final Note? note;
 
-  const NoteScreen({Key? key, this.note}) : super(key: key);
+  const NoteScreen({super.key, this.note});
 
   @override
   State<NoteScreen> createState() => _NoteScreenState();
@@ -58,19 +58,26 @@ class _NoteScreenState extends State<NoteScreen> {
       id: widget.note?.id,
       title: title.isEmpty ? 'Untitled' : title,
       content: content,
-      createdAt: widget.note?.createdAt ?? DateTime.now(),
-      modifiedAt: DateTime.now(),
-      colorIndex: _colorIndex,
       isPinned: _isPinned,
+      colorIndex: _colorIndex,
+      createdAt: widget.note?.createdAt,
+      modifiedAt: DateTime.now(),
     );
 
-    if (widget.note == null) {
-      await Provider.of<NoteProvider>(context, listen: false).addNote(note);
-    } else {
-      await Provider.of<NoteProvider>(context, listen: false).updateNote(note);
+    try {
+      if (widget.note == null) {
+        await Provider.of<NoteProvider>(context, listen: false).addNote(note);
+      } else {
+        await Provider.of<NoteProvider>(context, listen: false)
+            .updateNote(note);
+      }
+      return true;
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error saving note: $e')),
+      );
+      return false;
     }
-
-    return true;
   }
 
   @override

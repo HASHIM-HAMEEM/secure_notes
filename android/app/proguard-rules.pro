@@ -22,3 +22,6 @@
 -dontwarn javax.annotation.concurrent.ThreadSafe
 -dontwarn javax.lang.model.element.Modifier
 -dontwarn org.joda.time.Instant
+# Add any ProGuard rules required for your dependencies
+-keep class com.google.firebase.** { *; }
+-keep class com.google.android.gms.** { *; }

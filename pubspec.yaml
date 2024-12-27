@@ -1,28 +1,20 @@
 name: fin
 description: "A new Flutter project."
 
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
-
-
+publish_to: 'none'
 version: 1.0.0+1
 
 environment:
-  sdk: ^3.5.4
+  sdk: '>=3.0.0 <4.0.0'
 
 
 dependencies:
   flutter:
     sdk: flutter
-
-
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
+  local_auth: ^2.3.0
+  
+  # Core dependencies
   cupertino_icons: ^1.0.8
-
-dev_dependencies:
-  flutter_test:
-    sdk: flutter
-  cupertino_icons: ^1.0.2
   sqflite: ^2.3.0
   path: ^1.8.3
   provider: ^6.0.5
@@ -31,27 +23,28 @@ dev_dependencies:
   flutter_staggered_grid_view: ^0.7.0
   intl: ^0.18.1
   animations: ^2.0.8
+  connectivity_plus: ^5.0.2
+  
+  
+  # Firebase and authentication
+  firebase_core: ^2.24.2
+  firebase_auth: ^4.15.3
+  google_sign_in: ^6.1.6
+  cloud_firestore: ^4.13.6  # Add this line
 
-  # The "flutter_lints" package below contains a set of recommended lints to
-  # encourage good coding practices. The lint set provided by the package is
-  # activated in the `analysis_options.yaml` file located at the root of your
-  # package. See that file for information about deactivating specific lint
-  # rules and activating additional ones.
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
   flutter_lints: ^4.0.0
 
-# For information on the generic Dart part of this file, see the
-# following page: https://dart.dev/tools/pub/pubspec
-
-# The following section is specific to Flutter packages.
 flutter:
-
-
   uses-material-design: true
-  
   fonts:
     - family: Poppins
       fonts:
         - asset: assets/fonts/Poppins-Regular.ttf
         - asset: assets/fonts/Poppins-Bold.ttf
           weight: 700
- 
+  assets:
+    - assets/google_logo.png
+    - assets/app_logo.png

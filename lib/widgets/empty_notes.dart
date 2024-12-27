@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class EmptyNotes extends StatelessWidget {
-  const EmptyNotes({Key? key}) : super(key: key);
+  const EmptyNotes({super.key});
 
   @override
   Widget build(BuildContext context) {
